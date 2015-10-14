@@ -1,0 +1,49 @@
+<div class="row text-center" ng-show="!isAuthed()">
+  <h1>Hello! Log in to start!</h1>
+  <a href="#" ng-click="initLogin()">
+    <img src="/img/svg/log_in-desktop.svg" class="login-button">
+  </a>
+</div>
+<div class="row" ng-show="isAuthed()">
+<h3>Playlist Copier</h3>
+<p>This tool can be used to copy a playlist over into a new playlist. You can copy somebody elses or your own!</p>
+<form class="form-inline">
+  <div class="form-group">
+    <label for="newPlaylistTitle">Title:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="newPlaylistTitle"
+      placeholder="{{playlist.name}}"
+      ng-model="newPlaylistTitle">
+  </div>
+  <button bootstrap-tooltip
+      class="btn btn-primary"
+      ng-disabled="selectedTrackCount() == 0"
+      ng-click="copyPlaylistTracks()"
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title="Copy the selected tracks to your own new playlist!">{{ copyButtonText() }}</button>
+</form>
+<p ng-bind="errorText" class="text-danger"></p>
+<hr>
+<h3 ng-bind="getPlaylistTitleString()"></h3>
+<table class="table" id="songTable">
+  <thead>
+    <tr>
+      <th><input type="checkbox" ng-model="allTracksSelected" ng-change="updateCopyList()"></th>
+      <th>Track</th>
+      <th>Artist</th>
+      <th>Album</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="song in playlist.tracks.items">
+      <td><input type="checkbox" ng-model="copyTracks[song.track.uri]"></td>
+      <td>{{ song.track.name }}</td>
+      <td>{{ song.track.artists[0].name }}</td>
+      <td>{{ song.track.album.name }}</td>
+    </tr>
+  </tbody>
+</table>
+</div>

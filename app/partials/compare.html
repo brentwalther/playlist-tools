@@ -1,0 +1,126 @@
+<div class="row text-center">
+  <a href="#" ng-click="initLogin()" ng-show="!isAuthed()">
+    <img src="/img/svg/log_in-desktop.svg" class="login-button">
+  </a>
+</div>
+<div class="row text-center">
+  <p ng-show="itemsInCommonCount() > 0">
+    Items in common: {{ itemsInCommonCount() }}&nbsp;
+    <span class="bg-success">Common tracks are in green.</span>&nbsp;
+    <span class="bg-danger">Missing tracks are in red.</span>
+  </p>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <table class="table" id="songTable">
+      <thead>
+        <tr>
+          <th colspan="3">{{ playlistString(playlist) || "Find a playlist by:" }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+            ng-repeat="song in playlist.tracks.items"
+            ng-class="{ success: otherTrackMap[song.track.id], danger: !otherTrackMap[song.track.id] }">
+          <td>{{ song.track.name }}</td>
+          <td>{{ song.track.artists[0].name }}</td>
+          <td>
+            <button bootstrap-tooltip
+                class="btn btn-default btn-xs"
+                ng-click="addToPlaylist(otherPlaylist, song.track)"
+                ng-show="otherPlaylist.owner.id == currentUser.id && otherPlaylist.tracks && !otherTrackMap[song.track.id]"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Add this track to the other playlist.">
+              &gt;
+            </button>
+          </td>
+        </tr>
+        <tr ng-hide="playlist.tracks">
+          <td colspan="2">
+            <form ng-submit="tryGetPlaylistFromUri(true)">
+              <div class="form-group">
+                <label for="playlistUri">Playlist URI:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="playlistUri"
+                  placeholder="spotify:user:121624922:playlist:6qSKCQI3QSICqgIXx9pock"
+                  ng-model="playlistUri">
+              </div>
+            </form>
+            <p>or</p>
+            <form>
+              <div class="form-group">
+                <label for="otherUserId">Spotify User ID:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="otherUserId"
+                  placeholder="121624922"
+                  ng-model="playlist.owner.id">
+              </div>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-md-6">
+    <table class="table" id="songTable">
+      <thead>
+        <tr>
+          <th colspan="3">{{ playlistString(otherPlaylist) || "Find a playlist by:" }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+            ng-repeat="song in otherPlaylist.tracks.items"
+            ng-class="{ success: trackMap[song.track.id], danger: !trackMap[song.track.id] }">
+          <td>
+            <button bootstrap-tooltip
+                class="btn btn-default btn-xs"
+                ng-click="addToPlaylist(playlist, song.track)"
+                ng-show="playlist.owner.id == currentUser.id && playlist.tracks && !trackMap[song.track.id]"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Add this track to the other playlist.">
+              &lt;
+            </button>
+          </td>
+          <td>{{ song.track.name }}</td>
+          <td>{{ song.track.artists[0].name }}</td>
+        </tr>
+        <tr ng-hide="otherPlaylist.tracks">
+          <td colspan="2">
+            <form ng-submit="tryGetPlaylistFromUri(false)">
+              <div class="form-group">
+                <label for="otherPlaylistUri">Playlist URI:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="otherPlaylistUri"
+                  placeholder="spotify:user:121624922:playlist:6qSKCQI3QSICqgIXx9pock"
+                  ng-model="otherPlaylistUri">
+              </div>
+            </form>
+            <p>or</p>
+            <form>
+              <div class="form-group">
+                <label for="otherUserId">Spotify User ID:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="otherUserId"
+                  placeholder="121624922"
+                  ng-model="otherPlaylist.owner.id">
+              </div>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

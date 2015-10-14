@@ -1,0 +1,23 @@
+{
+  "name": "spot",
+  "version": "0.0.0",
+  "description": "Spotify playlist tools",
+  "authors": [
+    "Brent Walther <brentwalther@gmail.com>"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.4.1",
+    "angular-route": "1.4.1",
+    "angular-spotify": "~1.0.0",
+    "bootstrap": "~3.3.5",
+    "underscore": "~1.8.3",
+    "angular-ui-router": "~0.2.15"
+  }
+}
